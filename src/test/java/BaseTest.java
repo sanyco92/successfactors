@@ -31,7 +31,7 @@ public class BaseTest {
             Capabilities capabilities = new Capabilities();
             driver = new AndroidDriver<MobileElement>(capabilities.getServerURL(), capabilities.getAndroidCapabilities());
         }
-        driver.manage().timeouts().implicitlyWait(5, SECONDS);
+        driver.manage().timeouts().implicitlyWait(20, SECONDS);
         try {
             driver.findElement(By.name("Allow")).click();
         } catch (NoSuchElementException e) {

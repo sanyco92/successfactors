@@ -7,6 +7,7 @@ package pages;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSElement;
+import org.eclipse.jetty.util.IO;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.FindBy;
@@ -44,6 +45,11 @@ public class AddAlarmPage extends BasePage {
     @FindBy(name = "Add Alarm")
     private IOSElement backButton;
 
+    @FindBy(xpath = "//XCUIElementTypeApplication[@name=\"Smart Alarm\"]/XCUIElementTypeWindow[4]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypePicker/XCUIElementTypePickerWheel")
+    private IOSElement difficultyPicker;
+
+    @FindBy(name = "Toolbar Done Button")
+    private IOSElement toolbarDoneButton;
 
     public AddAlarmPage(AppiumDriver<MobileElement> driver) {
         super(driver);
@@ -70,7 +76,7 @@ public class AddAlarmPage extends BasePage {
 
     public void setDescription(String text) {
         descriptionCell.sendKeys(text);
-        driver.findElement(By.name("Toolbar Done Button")).click();
+        toolbarDoneButton.click();
     }
 
     public void clickAddAlarmButton() {
@@ -101,5 +107,17 @@ public class AddAlarmPage extends BasePage {
 
     public void clickBackButton() {
         backButton.click();
+    }
+
+    public String getMinutes() {
+        return minutesWheel.getText();
+    }
+
+    public void setDifficulty(String difficulty) {
+        difficultyPicker.sendKeys(difficulty);
+        toolbarDoneButton.click();
+    }
+    public void clickDoneButton() {
+        toolbarDoneButton.click();
     }
 }

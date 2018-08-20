@@ -15,14 +15,24 @@ public class AlarmStartedPage extends BasePage {
     @FindBy(name = "ic_sleep_close")
     private IOSElement cancelSliderButton;
 
+    @FindBy(name = "ic_sleep_checkmark")
+    private IOSElement performSliderButton;
+
     public AlarmStartedPage(AppiumDriver<MobileElement> driver) {
         super(driver);
     }
 
-    public void swipeSlider() {
+    public void swipeCancelSlider() {
         TouchAction action = new TouchAction(driver);
         action.tap(cancelSliderButton).waitAction(3000).moveTo(
                 cancelSliderButton.getCoordinates().inViewPort().getX() + 250,
                 cancelSliderButton.getCoordinates().inViewPort().getY()).perform();
+    }
+
+    public void swipePerformSlider() {
+        TouchAction action = new TouchAction(driver);
+        action.tap(performSliderButton).waitAction(3000).moveTo(
+                performSliderButton.getCoordinates().inViewPort().getX() + 250,
+                performSliderButton.getCoordinates().inViewPort().getY()).perform();
     }
 }

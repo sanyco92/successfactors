@@ -34,6 +34,8 @@ public class Capabilities {
         capabilities.setCapability("xcodeSigningId", "iPhone Developer");
 //        capabilities.setCapability(DEVICE_NAME, "iPhone SanyCo");
         capabilities.setCapability(DEVICE_NAME, "iPhone Simulator");
+        capabilities.setCapability("newCommandTimeout", "120000");
+
 //        capabilities.setCapability(UDID, "1a8f568b4a1c63513623db75029691e4a027bac0");
 
 

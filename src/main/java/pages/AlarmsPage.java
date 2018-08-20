@@ -10,6 +10,7 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -53,12 +54,13 @@ public class AlarmsPage extends BasePage {
     }
 
     public void clickAddAlarm() {
-        wait.until(ExpectedConditions.elementToBeClickable(addAlarmButton));
+        //wait.until(ExpectedConditions.elementToBeClickable(addAlarmButton));
         addAlarmButton.click();
     }
 
     public void clickStartButton() {
         startButton.click();
+        verifyNoAd();
     }
 
     public boolean verifyStartButtonClickable() {
@@ -130,6 +132,9 @@ public class AlarmsPage extends BasePage {
             closeAD.click();
         } catch (NoSuchElementException e) {
             System.out.println("Advertisement is not shown");
+        }
+        catch (TimeoutException e) {
+            System.out.println("There's no AD");
         }
     }
 
