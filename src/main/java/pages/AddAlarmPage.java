@@ -7,7 +7,6 @@ package pages;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSElement;
-import org.eclipse.jetty.util.IO;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.FindBy;
@@ -45,7 +44,7 @@ public class AddAlarmPage extends BasePage {
     @FindBy(name = "Add Alarm")
     private IOSElement backButton;
 
-    @FindBy(xpath = "//XCUIElementTypeApplication[@name=\"Smart Alarm\"]/XCUIElementTypeWindow[4]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypePicker/XCUIElementTypePickerWheel")
+    @FindBy(xpath = "//XCUIElementTypePicker/XCUIElementTypePickerWheel")
     private IOSElement difficultyPicker;
 
     @FindBy(name = "Toolbar Done Button")
@@ -81,6 +80,7 @@ public class AddAlarmPage extends BasePage {
 
     public void clickAddAlarmButton() {
         addAlarmButton.click();
+
     }
 
     public void clickRingtonesCell() {
@@ -89,6 +89,14 @@ public class AddAlarmPage extends BasePage {
 
     public void clickTasksCell() {
         tasksCell.click();
+    }
+
+    public void clickDoneButton() {
+        toolbarDoneButton.click();
+    }
+
+    public void clickBackButton() {
+        backButton.click();
     }
 
     public void selectRingtone() {
@@ -100,24 +108,28 @@ public class AddAlarmPage extends BasePage {
         cell.click();
         try {
             driver.findElement(By.name("OK")).click();
-        } catch(NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             System.out.println("There's no request for the Camera permission");
         }
-    }
-
-    public void clickBackButton() {
-        backButton.click();
-    }
-
-    public String getMinutes() {
-        return minutesWheel.getText();
     }
 
     public void setDifficulty(String difficulty) {
         difficultyPicker.sendKeys(difficulty);
         toolbarDoneButton.click();
     }
-    public void clickDoneButton() {
-        toolbarDoneButton.click();
+
+    public String getMinutes() {
+        return minutesWheel.getText();
     }
+
+    public void incrementAlarmTimeByMinute() {
+        int currentMinutes = Integer.valueOf(getMinutes().substring(0, Math.min(getMinutes().length(), 2))) + 1;
+        String strCurrentMinutes;
+        if (currentMinutes < 10) {
+            strCurrentMinutes = "0" + String.valueOf(currentMinutes);
+            setMinutesWheel(strCurrentMinutes);
+        } else setMinutesWheel(String.valueOf(currentMinutes));
+    }
+
+
 }

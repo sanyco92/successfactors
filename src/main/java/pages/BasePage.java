@@ -9,9 +9,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class BasePage {
 
     AppiumDriver<MobileElement> driver;
+    WebDriverWait wait;
 
     public BasePage(AppiumDriver<MobileElement> driver) {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, 60);
     }
 }

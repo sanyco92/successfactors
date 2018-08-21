@@ -1,5 +1,6 @@
 import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.ThreadUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
@@ -9,6 +10,7 @@ import org.testng.annotations.Test;
 import pages.AddAlarmPage;
 import pages.AlarmStartedPage;
 import pages.AlarmsPage;
+import pages.PerformTasksPage;
 import support.Time;
 
 import javax.script.ScriptEngine;
@@ -72,46 +74,50 @@ public class Tests extends BaseTest {
 
     @Test
     public void startAlarmAndWaitForAlarmFire() throws IOException, InterruptedException, ScriptException {
-        String description = generateText();
         AlarmsPage alarmsPage = new AlarmsPage(driver);
         alarmsPage.clickAddAlarm();
         AddAlarmPage addAlarmPage = new AddAlarmPage(driver);
-        int currentMinutes = Integer.valueOf(addAlarmPage.getMinutes().substring(0, Math.min(addAlarmPage.getMinutes().length(), 2))) + 1;
-        String strCurrentMinutes;
-        if (currentMinutes < 10) {
-            strCurrentMinutes = "0" + String.valueOf(currentMinutes);
-            addAlarmPage.setMinutesWheel(strCurrentMinutes);
-        }
-        else addAlarmPage.setMinutesWheel(String.valueOf(currentMinutes));
+        addAlarmPage.incrementAlarmTimeByMinute();
         addAlarmPage.clickRingtonesCell();
         addAlarmPage.selectRingtone();
         addAlarmPage.clickBackButton();
         addAlarmPage.clickTasksCell();
         addAlarmPage.selectTask("Math Equation");
         addAlarmPage.setDifficulty("Easy");
-
         addAlarmPage.clickBackButton();
         addAlarmPage.clickAddAlarmButton();
+        verifyNoAd();
         alarmsPage.clickStartButton();
         AlarmStartedPage alarmStartedPage = new AlarmStartedPage(driver);
-        Thread.sleep(60000);
-        System.out.println("Alarm Fire!");
         alarmStartedPage.swipePerformSlider();
-        String equation = driver.findElement(By.xpath("//XCUIElementTypeCell/XCUIElementTypeStaticText[2]")).getText();
-        ScriptEngineManager mgr = new ScriptEngineManager();
-        ScriptEngine engine = mgr.getEngineByName("JavaScript");
-        System.out.println(engine.eval(equation));
-        driver.findElement(By.name("Answer")).sendKeys(String.valueOf(engine.eval(equation)));
+        PerformTasksPage performTasksPage = new PerformTasksPage(driver);
+        String equation = performTasksPage.getEquationText();
+        String result = performTasksPage.solveEquation(equation);
+        performTasksPage.enterAnswer(result);
         addAlarmPage.clickDoneButton();
         driver.findElement(By.name("All Tasks Completed!")).isDisplayed();
+        Thread.sleep(3000);
 
-}
+    }
 
     public String generateText() {
         int length = 10;
-        boolean useLetters = true;
-        boolean useNumbers = false;
-        return RandomStringUtils.random(length, useLetters, useNumbers);
+        return RandomStringUtils.random(length, true, false);
+    }
+
+    public void verifyNoAd() {
+        try {
+            Thread.sleep(2000);
+//            wait.until(ExpectedConditions.presenceOfElementLocated(By.name("Close Advertisement")));
+            MobileElement closeAD = driver.findElement(By.name("Close Advertisement"));
+            closeAD.click();
+        } catch (NoSuchElementException e) {
+            System.out.println("Advertisement is not shown");
+        } catch (TimeoutException e) {
+            System.out.println("There's no AD");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

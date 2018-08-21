@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="iOS Tests for SmartAlarm">
+    <test name="Functional Tests" >
+        <classes>
+            <class name="Tests">
+                <methods>
+                    <include name="alarmCreation"/>
+                    <include name="removeAlarm"/>
+                    <include name="startAndCancelAlarm"/>
+                    <include name="switchAlarmsState"/>
+                    <include name="startAlarmAndWaitForAlarmFire"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

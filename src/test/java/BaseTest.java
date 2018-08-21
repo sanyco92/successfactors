@@ -17,8 +17,8 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class BaseTest {
     static AppiumDriver<MobileElement> driver;
     static WebDriverWait wait;
-    public Platform platform = Platform.IOS;
-    public Device device = Device.SIMULATOR;
+    private Platform platform = Platform.IOS;
+    private Device device = Device.REAL;
 
     @BeforeMethod
     public void setUp() throws MalformedURLException {
@@ -26,12 +26,13 @@ public class BaseTest {
 
             Capabilities capabilities = new Capabilities();
             driver = new IOSDriver<MobileElement>(capabilities.getServerURL(), capabilities.getIOSCapabilities());
+            wait = new WebDriverWait(driver, 70);
 
         } else if (platform.equals(Platform.ANDROID)) {
             Capabilities capabilities = new Capabilities();
             driver = new AndroidDriver<MobileElement>(capabilities.getServerURL(), capabilities.getAndroidCapabilities());
         }
-        driver.manage().timeouts().implicitlyWait(20, SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, SECONDS);
         try {
             driver.findElement(By.name("Allow")).click();
         } catch (NoSuchElementException e) {
@@ -44,7 +45,7 @@ public class BaseTest {
         driver.quit();
     }
 
-    public Time generateTime() {
+    Time generateTime() {
         Time alarmTime;
         if (device.equals(Device.REAL)) {
             alarmTime = new Time("24h");
@@ -54,12 +55,12 @@ public class BaseTest {
         return alarmTime;
     }
 
-    enum Platform {
+    private enum Platform {
         IOS,
         ANDROID
     }
 
-    enum Device {
+    private enum Device {
         REAL,
         SIMULATOR
     }

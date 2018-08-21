@@ -60,7 +60,6 @@ public class AlarmsPage extends BasePage {
 
     public void clickStartButton() {
         startButton.click();
-        verifyNoAd();
     }
 
     public boolean verifyStartButtonClickable() {
@@ -124,18 +123,6 @@ public class AlarmsPage extends BasePage {
 
     public int getAlarmsCount() {
         return driver.findElements(By.xpath("//XCUIElementTypeTable/XCUIElementTypeCell")).size();
-    }
-
-    public void verifyNoAd() {
-        try {
-            MobileElement closeAD = driver.findElement(By.name("Close Advertisement"));
-            closeAD.click();
-        } catch (NoSuchElementException e) {
-            System.out.println("Advertisement is not shown");
-        }
-        catch (TimeoutException e) {
-            System.out.println("There's no AD");
-        }
     }
 
     public void verifyAlarmCreated(Time alarmTime) {
